@@ -22,7 +22,7 @@ export class UsersDetails {
 
   /* 3️⃣ CALLBACK (VIENE DEL PADRE) */
   onSelect = input<
-  ((user: { id: number; nombre: string } | null) => void) | undefined
+  ((user: { id: number; nombre: string } | null) => void)
 >();
 
 
