@@ -1,0 +1,14 @@
+<h1>Lista de usuarios</h1>
+
+    <button (click)="seleccionarUsuario()">
+      Seleccionar usuario
+    </button>
+
+    <button (click)="mostrar = !mostrar">
+      Mostrar / Ocultar detalle
+    </button>
+
+    <app-users-details
+      *ngIf="mostrar"
+      [user]="usuarioSeleccionado">
+    </app-users-details>
