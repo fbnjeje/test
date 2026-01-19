@@ -1,54 +1,45 @@
-import { 
+import {
   Component,
-  Input,
-  OnInit,
-  OnChanges,
-  SimpleChanges,
-  AfterViewInit,
-  OnDestroy,
-  ViewChild,
-  ElementRef
+  input,
+  viewChild,
+  ElementRef,
+  effect
 } from '@angular/core';
-import { Users } from "../../pages/users/users";
-import { NgIf } from "../../../../node_modules/@angular/common/types/_common_module-chunk";
 
 @Component({
   selector: 'app-users-details',
-  imports: [],
-  templateUrl: "./users-details.html" ,
+  standalone: true,
+  templateUrl: './users-details.html',
   styleUrl: './users-details.css',
 })
-export class UsersDetails implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class UsersDetails {
 
-  /* INPUT */
-  @Input() user: { id: number; nombre: string } | null = null;
+  /* 1️⃣ INPUT MODERNO (signal) */
+  user = input<{ id: number; nombre: string } | null>(null);
 
-  /* VIEW CHILD */
-  @ViewChild('titulo') titulo!: ElementRef;
+  /* 2️⃣ VIEWCHILD MODERNO */
+  titulo = viewChild<ElementRef>('titulo');
 
-  /* 1️⃣ CONSTRUCTOR */
+  /* 3️⃣ CALLBACK (VIENE DEL PADRE) */
+  onSelect = input<
+  ((user: { id: number; nombre: string } | null) => void) | undefined
+>();
+
+
   constructor() {
-    console.log('1️⃣ constructor → se crea el componente');
+    console.log('constructor');
   }
 
-  /* 2️⃣ ON CHANGES */
-  ngOnChanges(changes: SimpleChanges) {
-    console.log('ngOnChanges → cambió el usuario', changes);
-  }
+  /* 4️⃣ EFFECT → reemplaza ngOnInit + ngOnChanges */
+  userEffect = effect(() => {
+    console.log('Usuario actual:', this.user());
 
-  /* 3️⃣ ON INIT */
-  ngOnInit() {
-    console.log('ngOnInit → inicializar lógica');
-  }
+    
+  });
 
-  /* 4️⃣ AFTER VIEW INIT */
-  ngAfterViewInit() {
-    console.log('ngAfterViewInit → DOM listo');
-    this.titulo.nativeElement.style.color = 'green';
-  }
-
-  /* 5️⃣ ON DESTROY */
-  ngOnDestroy() {
-    console.log('ngOnDestroy → limpieza');
+  /* 5️⃣ MÉTODO QUE LLAMA AL PADRE */
+   seleccionar() {
+    // 👈 ahora sí funciona
+    this.onSelect()?.(this.user());
   }
 }

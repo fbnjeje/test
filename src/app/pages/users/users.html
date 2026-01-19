@@ -10,5 +10,8 @@
 
     <app-users-details
       *ngIf="mostrar"
-      [user]="usuarioSeleccionado">
+      [user]="usuarioSeleccionado"
+      [onSelect]="recibirUsuario"
+      >
     </app-users-details>
+
